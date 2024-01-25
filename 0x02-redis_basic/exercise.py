@@ -3,7 +3,7 @@
 
 import redis
 import uuid
-from typing import Union
+from typing import Union, Callable, Optional
 
 
 class Cache:
@@ -16,6 +16,20 @@ class Cache:
 
     def store(self, data: Union[str, float, bytes, int]) -> str:
         """doc doc method"""
-        key = str(uuid.uuid4())
-        self._redis.set(key, data)
-        return key
+        keyx = str(uuid.uuid4())
+        self._redis.set(keyx, data)
+        return keyx
+
+    def get(
+        self, key: str, fn: Optional[Callable] = None
+    ) -> Union[str, bytes, int, float]:
+        value = self._redis.get(key)
+        if fn:
+            value = fn(value)
+        return value
+
+    def get_str(self, key: str) -> str:
+        return self.get(key, fn=str)
+
+    def get_int(self, key: str) -> int:
+        return self.get(key, fn=int)
