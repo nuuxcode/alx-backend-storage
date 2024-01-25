@@ -37,6 +37,7 @@ def call_history(method: Callable) -> Callable:
 
 
 def replay(method: Callable):
+    """doc doc class"""
     input_key = "{}:inputs".format(method.__qualname__)
     output_key = "{}:outputs".format(method.__qualname__)
 
